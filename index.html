@@ -162,7 +162,7 @@
     background:linear-gradient(135deg,#fff9df 0%, #f4d57d 38%, #fff0b2 68%, #fffced 100%);
     color:#7a5510;
   }
-  .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05;color:var(--resultMember)}
+  .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05;color:var(--resultMember);margin-top:2px}
   .result-item{display:block;margin-top:8px;font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--resultItem)}
   .result-variant{display:block;margin-top:5px;color:var(--resultVariant);font-size:clamp(13px,1.8vw,17px);font-weight:800}
   .result-size{display:block;margin-top:5px;color:var(--resultSize);font-size:clamp(13px,1.8vw,17px);font-weight:800}
@@ -462,7 +462,6 @@
     const size = itemSizes[activeCampaignKey][prize.item] || '';
     return `
       <div class="result-card">
-        <span class="result-rarity rarity-${prize.rarity.toLowerCase()}">${escapeHtml(prize.rarity)}</span>
         <span class="result-member">${escapeHtml(prize.member)}</span>
         <span class="result-item">${escapeHtml(prize.item)}</span>
         ${prize.variant ? `<span class="result-variant">${escapeHtml(prize.variant)}</span>` : ''}
