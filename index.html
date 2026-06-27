@@ -3,559 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANGERME Official Online Gacha - STAINED GLASS Ver.</title>
+<title>ANGERME / BEYOOOOONDS 切り替えガチャ</title>
 <style>
-  :root {
-    --bg: #07080d;
-    --panel: rgba(255,255,255,0.10);
-    --panel-strong: rgba(255,255,255,0.16);
-    --text: #ffffff;
-    --sub: rgba(255,255,255,0.78);
-    --gold: #f5d36c;
-    --blue: #52c8ff;
+  :root{
+    --bg1:#071015;
+    --bg2:#16212a;
+    --bg3:#0a1117;
+    --accent1:#67c5ff;
+    --accent2:#f5d36c;
+    --panel:rgba(255,255,255,.11);
+    --line:rgba(255,255,255,.18);
+    --text:#fff;
+    --sub:rgba(255,255,255,.80);
+    --buttonText:#102030;
+    --titleShadow:#0b2437;
   }
-
-  * { box-sizing: border-box; }
-
-  body {
-    font-family: Arial, "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-    text-align: center;
-    padding: 28px;
-    margin: 0;
-    min-height: 100vh;
-    color: var(--text);
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    min-height:100vh;
+    padding:24px;
+    font-family:Arial,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+    text-align:center;
+    color:var(--text);
     background:
-      radial-gradient(circle at 20% 10%, rgba(79, 192, 255, 0.22), transparent 32%),
-      radial-gradient(circle at 80% 0%, rgba(255, 219, 117, 0.20), transparent 36%),
-      radial-gradient(circle at 50% 80%, rgba(255, 122, 203, 0.12), transparent 38%),
-      var(--bg);
+      radial-gradient(circle at 18% 10%, color-mix(in srgb, var(--accent1) 28%, transparent), transparent 34%),
+      radial-gradient(circle at 82% 8%, color-mix(in srgb, var(--accent2) 28%, transparent), transparent 32%),
+      radial-gradient(circle at 50% 95%, color-mix(in srgb, var(--accent1) 18%, transparent), transparent 38%),
+      linear-gradient(135deg,var(--bg1),var(--bg2) 55%,var(--bg3));
   }
-
-  h1 {
-    margin: 0;
-    font-size: clamp(26px, 4vw, 48px);
-    line-height: 1.05;
-    letter-spacing: 0.03em;
-    text-shadow: 0 4px 16px rgba(0,0,0,0.75);
+  h1{
+    margin:0;
+    font-size:clamp(28px,5vw,58px);
+    line-height:1.0;
+    letter-spacing:.02em;
+    color:#ffffff;
+    text-shadow:0 4px 0 color-mix(in srgb, var(--titleShadow) 85%, black),0 10px 26px rgba(0,0,0,.58);
   }
-
-  .subtitle {
-    margin: 8px auto 18px;
-    color: var(--sub);
-    font-weight: 700;
-    letter-spacing: 0.08em;
+  .subtitle{
+    display:inline-block;
+    margin:10px auto 18px;
+    padding:7px 18px;
+    border-radius:999px;
+    background:rgba(255,255,255,.14);
+    border:1px solid var(--line);
+    color:#f4faff;
+    font-weight:900;
+    letter-spacing:.04em;
+    max-width:min(92vw,920px);
   }
-
-  .top-actions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 18px auto 22px;
+  .campaign-switch{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:0 auto 14px;
   }
-
-  button {
-    border: 0;
-    border-radius: 999px;
-    padding: 10px 18px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    color: #10121c;
-    background: linear-gradient(135deg, #ffffff, #d7f4ff);
-    box-shadow: 0 5px 16px rgba(0,0,0,0.28);
+  .campaign-btn{
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;
+    padding:10px 16px;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    color:#fff;
+    background:rgba(255,255,255,.10);
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
   }
-
-  button:hover { transform: translateY(-1px); }
-  button.primary {
-    background: linear-gradient(135deg, #fff3b8, #6bd6ff);
-    padding-inline: 26px;
+  .campaign-btn.active{
+    color:var(--buttonText);
+    background:linear-gradient(135deg,#fff7c0,var(--accent1));
   }
-
-  .video-frame {
-    width: 100%;
-    max-width: 900px;
-    aspect-ratio: 16/9;
-    background: #000;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto 20px;
-    display: block;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+  .top-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:0 auto 18px;
   }
-
-  .video-frame video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    position: relative;
+  button.action{
+    border:0;
+    border-radius:999px;
+    padding:10px 18px;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    color:var(--buttonText);
+    background:linear-gradient(135deg,#fffde8,color-mix(in srgb, var(--accent1) 55%, white));
+    box-shadow:0 6px 18px rgba(0,0,0,.28);
   }
-
-  .overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(84%, 620px);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.8s;
-    z-index: 2;
+  button.action:hover, .campaign-btn:hover{transform:translateY(-1px)}
+  button.action.primary{padding-inline:28px;background:linear-gradient(135deg,#fff3a6,var(--accent1))}
+  .main-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(290px,430px);
+    gap:18px;
+    max-width:1200px;
+    margin:0 auto;
+    align-items:start;
   }
-
-  .result-card {
-    padding: 24px 20px;
-    border-radius: 18px;
-    background: rgba(0,0,0,0.68);
-    border: 2px solid rgba(255,255,255,0.38);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 0 30px rgba(255,255,255,0.08);
-    text-shadow: 0 3px 7px #000;
-    white-space: pre-line;
+  .video-frame{
+    width:100%;
+    max-width:900px;
+    aspect-ratio:16/9;
+    background:#000;
+    position:relative;
+    overflow:hidden;
+    margin:0 auto;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:0 18px 56px rgba(0,0,0,.58);
   }
-
-  .result-rarity {
-    display: inline-block;
-    margin-bottom: 8px;
-    padding: 4px 14px;
-    border-radius: 999px;
-    font-size: clamp(18px, 3vw, 30px);
-    letter-spacing: 0.09em;
+  .video-frame video{width:100%;height:100%;object-fit:cover;position:relative;z-index:0}
+  .overlay{
+    position:absolute;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    width:min(86%,650px);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .75s;
+    z-index:2;
   }
-
-  .result-member {
-    display: block;
-    font-size: clamp(28px, 5vw, 54px);
-    font-weight: 900;
-    line-height: 1.05;
+  .result-card{
+    padding:23px 20px;
+    border-radius:20px;
+    background:rgba(2,9,14,.74);
+    border:2px solid rgba(255,255,255,.40);
+    box-shadow:0 8px 32px rgba(0,0,0,.56), inset 0 0 30px rgba(255,255,255,.08);
+    text-shadow:0 3px 8px #000;
+    white-space:pre-line;
   }
-
-  .result-item {
-    display: block;
-    margin-top: 8px;
-    font-size: clamp(20px, 3vw, 34px);
-    font-weight: 900;
+  .result-rarity{
+    display:inline-block;
+    margin-bottom:8px;
+    padding:4px 15px;
+    border-radius:999px;
+    background:rgba(255,255,255,.16);
+    font-size:clamp(18px,3vw,30px);
+    letter-spacing:.08em;
   }
-
-  .result-size {
-    display: block;
-    margin-top: 5px;
-    color: rgba(255,255,255,0.75);
-    font-size: clamp(12px, 1.7vw, 16px);
-    font-weight: 700;
+  .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05}
+  .result-item{display:block;margin-top:8px;font-size:clamp(20px,3vw,32px);font-weight:900}
+  .result-variant,.result-size{display:block;margin-top:5px;color:rgba(255,255,255,.78);font-size:clamp(13px,1.8vw,17px);font-weight:800}
+  .counter-overlay{
+    position:absolute;
+    bottom:12px;left:50%;transform:translateX(-50%);
+    background:rgba(0,0,0,.64);
+    color:#fff;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:15px;
+    z-index:2;
+    backdrop-filter:blur(5px);
   }
-
-  .counter-overlay {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.62);
-    color: #fff;
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 15px;
-    z-index: 2;
-    backdrop-filter: blur(5px);
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:16px;
+    box-shadow:0 12px 32px rgba(0,0,0,.28);
+    backdrop-filter:blur(7px);
+    text-align:left;
   }
-
-  .main-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-    gap: 18px;
-    max-width: 1160px;
-    margin: 0 auto;
-    align-items: start;
+  .panel h2{margin:0 0 12px;text-align:center;font-size:18px}
+  .lineup-row{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.12)}
+  .lineup-row:first-of-type{border-top:0}
+  .badge{display:inline-flex;align-items:center;justify-content:center;align-self:start;min-width:48px;padding:4px 8px;border-radius:999px;font-weight:900;color:#0c1510}
+  .badge-sr{background:linear-gradient(90deg,#fff2a8,#84e6bb,#c0fbef)}
+  .badge-r{background:var(--accent2)}
+  .badge-n{background:#fff}
+  .lineup-name{font-weight:900;font-size:15px}
+  .lineup-meta{color:var(--sub);font-size:12px;margin-top:2px;line-height:1.55}
+  #history{display:none;margin-top:14px;max-height:290px;overflow:auto}
+  .history-item{padding:8px 10px;border-top:1px solid rgba(255,255,255,.12);font-weight:800;line-height:1.45}
+  .white-text{color:white}
+  .gold-text{color:#ffe36a}
+  .rainbow-text{
+    background:linear-gradient(to right,#fff3a2,#86ffc8,#75ceff,#ffd3ef);
+    -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;
   }
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid rgba(255,255,255,0.16);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.28);
-    backdrop-filter: blur(6px);
-    text-align: left;
+  #listModal{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);
+    align-items:center;justify-content:center;z-index:999;padding:18px;
   }
-
-  .panel h2 {
-    margin: 0 0 12px;
-    font-size: 18px;
-    text-align: center;
+  #listModal .modal-content{
+    width:100%;max-width:780px;max-height:82vh;overflow:auto;background:#162027;color:#fff;
+    border-radius:18px;border:1px solid rgba(255,255,255,.2);padding:20px;text-align:left;
   }
-
-  .lineup-row {
-    display: grid;
-    grid-template-columns: 54px 1fr;
-    gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(255,255,255,0.12);
-  }
-
-  .lineup-row:first-of-type { border-top: 0; }
-  .badge {
-    align-self: start;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 46px;
-    padding: 4px 8px;
-    border-radius: 999px;
-    font-weight: 900;
-    color: #080a12;
-  }
-
-  .badge-sr { background: linear-gradient(90deg, #ff8bdc, #fff06b, #5be7ff); }
-  .badge-r  { background: var(--gold); }
-  .badge-n  { background: #ffffff; }
-
-  .lineup-name { font-weight: 900; font-size: 15px; }
-  .lineup-meta { color: var(--sub); font-size: 12px; margin-top: 2px; }
-
-  #history {
-    display:none;
-    margin-top: 14px;
-    max-height: 260px;
-    overflow: auto;
-  }
-
-  #history .history-item {
-    padding: 8px 10px;
-    border-top: 1px solid rgba(255,255,255,0.11);
-    font-weight: 700;
-  }
-
-  .white-text { color: white; }
-  .gold-text  { color: gold; }
-  .rainbow-text {
-    background: linear-gradient(to right, #ff7acb, #ffe970, #6ee7ff, #b48cff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 900;
-  }
-
-  #itemModal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    padding: 18px;
-  }
-
-  #itemModal .modal-content {
-    background: #161925;
-    padding: 20px;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 560px;
-    color: #fff;
-    text-align: left;
-    border: 1px solid rgba(255,255,255,0.18);
-  }
-
-  #itemModal h2 { margin-top: 0; font-size: 20px; text-align: center; }
-  .item-group { margin-bottom: 16px; }
-  .item-group h3 { margin-bottom: 8px; font-size: 16px; }
-  .item-list { display: flex; flex-wrap: wrap; gap: 8px; }
-  .item-list input {
-    flex: 1 1 45%;
-    padding: 8px 10px;
-    border:1px solid #444;
-    border-radius:8px;
-    background: #222739;
-    color: #fff;
-  }
-  .item-group button.add { margin-top: 8px; padding:7px 12px; font-size:12px; }
-  .modal-actions { text-align: right; margin-top: 12px; }
-  .modal-actions button { margin-left: 8px; }
-
-  @media (max-width: 980px) {
-    .main-grid { grid-template-columns: 1fr; }
-    body { padding: 18px; }
+  #listModal h2{margin-top:0;text-align:center}
+  .prize-list{columns:2;column-gap:26px;font-size:13px;line-height:1.7}
+  .prize-list div{break-inside:avoid;border-bottom:1px solid rgba(255,255,255,.08);padding:2px 0}
+  .modal-actions{text-align:right;margin-top:14px}
+  .help-text{max-width:1040px;margin:0 auto 14px;color:var(--sub);font-size:13px}
+  @media(max-width:980px){
+    body{padding:18px}
+    .main-grid{grid-template-columns:1fr}
+    .prize-list{columns:1}
   }
 </style>
 </head>
 <body>
 
-<h1>ANGERME Official Online Gacha</h1>
-<div class="subtitle">- STAINED GLASS Ver. - / 1play 500yen</div>
+<div class="campaign-switch">
+  <button class="campaign-btn active" data-campaign="angerme">ANGERME</button>
+  <button class="campaign-btn" data-campaign="beyooooonds">BEYOOOOONDS</button>
+</div>
+
+<h1 id="pageTitle">ANGERME</h1>
+<div class="subtitle" id="pageSubtitle">Official Online Gacha - STAINED GLASS Ver. - / 1play 500yen</div>
+<div class="help-text">上のボタンでアンジュルム版とBEYOOOOONDS版を切り替えできます。各グループごとに獲得履歴とカウントを保持します。</div>
 
 <div class="top-actions">
-  <button id="drawButton" class="primary">ガチャを回す</button>
-  <button id="showHistoryButton">獲得アイテム一覧</button>
-  <button id="editItemsButton">出現アイテム編集</button>
-  <button id="resetButton">リセット</button>
+  <button id="drawButton" class="action primary">ガチャを回す</button>
+  <button id="showHistoryButton" class="action">獲得アイテム一覧</button>
+  <button id="showPrizeListButton" class="action">景品ラインナップ詳細</button>
+  <button id="resetButton" class="action">このグループだけリセット</button>
 </div>
 
 <div class="main-grid">
-  <div>
-    <div class="video-frame">
-      <!-- 動画ファイル名は元アプリと同じ。GitHub上の動画をそのまま使えます。 -->
-      <video id="gachaVideo" src="scene_1.mp4" autoplay loop muted playsinline></video>
-      <div id="overlay" class="overlay"></div>
-      <div id="counter" class="counter-overlay"></div>
-    </div>
+  <div class="video-frame">
+    <video id="gachaVideo" src="scene_1.mp4" autoplay loop muted playsinline></video>
+    <div id="overlay" class="overlay"></div>
+    <div id="counter" class="counter-overlay"></div>
   </div>
 
   <aside class="panel">
     <h2>景品ラインナップ</h2>
-    <div class="lineup-row">
-      <span class="badge badge-sr">SR</span>
-      <div>
-        <div class="lineup-name">フェイスタオル</div>
-        <div class="lineup-meta">全9種 / サイズ: 本体 約W340mm × H840mm</div>
-      </div>
-    </div>
-    <div class="lineup-row">
-      <span class="badge badge-r">R</span>
-      <div>
-        <div class="lineup-name">アクリルマルチバンド</div>
-        <div class="lineup-meta">全9種 / サイズ: 約W90mm × H40mm</div>
-      </div>
-    </div>
-    <div class="lineup-row">
-      <span class="badge badge-r">R</span>
-      <div>
-        <div class="lineup-name">アクリルキーホルダー</div>
-        <div class="lineup-meta">全9種 / サイズ: 約W38mm × H67mm</div>
-      </div>
-    </div>
-    <div class="lineup-row">
-      <span class="badge badge-n">N</span>
-      <div>
-        <div class="lineup-name">缶バッジ</div>
-        <div class="lineup-meta">全9種 / サイズ: 約φ56mm</div>
-      </div>
-    </div>
-
+    <div id="lineupContainer"></div>
     <div id="history"></div>
   </aside>
 </div>
 
-<div id="itemModal">
+<div id="listModal">
   <div class="modal-content">
-    <h2>出現アイテム編集</h2>
-
-    <div class="item-group" data-rarity="N">
-      <h3>Nアイテム</h3>
-      <div class="item-list" id="list-N"></div>
-      <button class="add" data-rarity="N">＋Nアイテムを追加</button>
-    </div>
-
-    <div class="item-group" data-rarity="R">
-      <h3>Rアイテム</h3>
-      <div class="item-list" id="list-R"></div>
-      <button class="add" data-rarity="R">＋Rアイテムを追加</button>
-    </div>
-
-    <div class="item-group" data-rarity="SR">
-      <h3>SRアイテム</h3>
-      <div class="item-list" id="list-SR"></div>
-      <button class="add" data-rarity="SR">＋SRアイテムを追加</button>
-    </div>
-
-    <div class="modal-actions">
-      <button id="cancelEdit">キャンセル</button>
-      <button id="saveEdit">保存</button>
-    </div>
+    <h2 id="prizeListTitle">景品ラインナップ詳細</h2>
+    <div id="prizeList" class="prize-list"></div>
+    <div class="modal-actions"><button id="closeListModal" class="action">閉じる</button></div>
   </div>
 </div>
 
 <script>
-  //―――― STAINED GLASS Ver. 初期データ
-  // 現在のアンジュルムメンバー名を漢字表記で設定しています。
-  const members = [
-    "伊勢鈴蘭",
-    "為永幸音",
-    "橋迫鈴",
-    "川名凜",
-    "松本わかな",
-    "平山遊季",
-    "下井谷幸穂",
-    "後藤花",
-    "長野桃羽"
-  ];
+  const itemSizes = {
+    angerme: {
+      "フェイスタオル": "本体 約W340mm × H840mm",
+      "アクリルマルチバンド": "約W90mm × H40mm",
+      "アクリルキーホルダー": "約W38mm × H67mm",
+      "缶バッジ": "約φ56mm"
+    },
+    beyooooonds: {
+      "メモリアルパネル": "約W180mm × H150mm",
+      "BIGアクリルスタンド": "本体 約W100mm × H160mm / 台座 約W60mm × H30mm",
+      "ソロアクリルキーホルダー": "約W51.5mm × H65mm",
+      "コレクションステッカー2枚セット": "約W55mm × H91mm"
+    }
+  };
 
-  let counts = { SR:0, R:0, N:0 };
-  let history = [];
-
-  // 排出率は元アプリの雰囲気を維持。必要ならここだけ変更してください。
   const rarities = [
     { type:"N", rate:65 },
     { type:"R", rate:30 },
-    { type:"SR",rate:5 }
+    { type:"SR", rate:5 }
   ];
 
-  let itemsConfig = {
-    N:["缶バッジ"],
-    R:["アクリルマルチバンド", "アクリルキーホルダー"],
-    SR:["フェイスタオル"]
+  const campaigns = {
+    angerme: {
+      title: "ANGERME",
+      subtitle: "Official Online Gacha - STAINED GLASS Ver. - / 1play 500yen",
+      prizeListTitle: "ANGERME 景品ラインナップ詳細",
+      theme: {
+        bg1: "#07131c", bg2: "#163043", bg3: "#08111a",
+        accent1: "#57c6ff", accent2: "#f2c96a", buttonText: "#0e2231", titleShadow: "#294d68"
+      },
+      lineup: [
+        { badge:"SR", name:"フェイスタオル", meta:"全9種 / サイズ: 本体 約W340mm × H840mm" },
+        { badge:"R", name:"アクリルマルチバンド", meta:"全9種 / サイズ: 約W90mm × H40mm" },
+        { badge:"R", name:"アクリルキーホルダー", meta:"全9種 / サイズ: 約W38mm × H67mm" },
+        { badge:"N", name:"缶バッジ", meta:"全9種 / サイズ: 約φ56mm" }
+      ],
+      state: { counts:{SR:0,R:0,N:0}, history:[] },
+      pools: createAngermePrizePools()
+    },
+    beyooooonds: {
+      title: "BEYOOOOONDS",
+      subtitle: "CONCERT 2026 SPRING [HIGH! TENSION BEYOSCOOOOPE] / Official Online Gacha",
+      prizeListTitle: "BEYOOOOONDS 景品ラインナップ詳細",
+      theme: {
+        bg1: "#07140f", bg2: "#14251d", bg3: "#09130f",
+        accent1: "#79d8ad", accent2: "#d6b64e", buttonText: "#132018", titleShadow: "#5d7a48"
+      },
+      lineup: [
+        { badge:"SR", name:"メモリアルパネル", meta:"全1種 / サイズ: 約W180mm × H150mm" },
+        { badge:"SR", name:"BIGアクリルスタンド", meta:"全19種 / 各メンバー2種 + 高瀬くるみSP1種<br>サイズ: 本体 約W100mm × H160mm / 台座 約W60mm × H30mm" },
+        { badge:"R", name:"ソロアクリルキーホルダー", meta:"全10種 / 高瀬くるみのみ通常 + SP版<br>サイズ: 約W51.5mm × H65mm" },
+        { badge:"N", name:"コレクションステッカー2枚セット", meta:"全10種 / 高瀬くるみのみ通常 + SP版<br>サイズ: 約W55mm × H91mm" }
+      ],
+      state: { counts:{SR:0,R:0,N:0}, history:[] },
+      pools: createBeyoPrizePools()
+    }
   };
 
-  const itemSizes = {
-    "フェイスタオル":"本体 約W340mm × H840mm",
-    "アクリルマルチバンド":"約W90mm × H40mm",
-    "アクリルキーホルダー":"約W38mm × H67mm",
-    "缶バッジ":"約φ56mm"
-  };
+  let activeCampaignKey = "angerme";
+  let isRolling = false;
 
-  const videoEl   = document.getElementById("gachaVideo");
+  const videoEl = document.getElementById("gachaVideo");
   const overlayEl = document.getElementById("overlay");
   const counterEl = document.getElementById("counter");
-  const histEl    = document.getElementById("history");
+  const histEl = document.getElementById("history");
+  const lineupContainer = document.getElementById("lineupContainer");
 
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>'"]/g, tag => ({
-      '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
-    }[tag]));
+  function createAngermePrizePools(){
+    const members = [
+      "伊勢鈴蘭",
+      "為永幸音",
+      "橋迫鈴",
+      "川名凜",
+      "松本わかな",
+      "平山遊季",
+      "下井谷幸穂",
+      "後藤花",
+      "長野桃羽"
+    ];
+    const pools = { SR:[], R:[], N:[] };
+    members.forEach(member => {
+      pools.SR.push({ rarity:"SR", member, item:"フェイスタオル", variant:"" });
+      pools.R.push({ rarity:"R", member, item:"アクリルマルチバンド", variant:"" });
+      pools.R.push({ rarity:"R", member, item:"アクリルキーホルダー", variant:"" });
+      pools.N.push({ rarity:"N", member, item:"缶バッジ", variant:"" });
+    });
+    return pools;
   }
 
-  function updateCounter(){
-    counterEl.innerText = `SR:${counts.SR}個 / R:${counts.R}個 / N:${counts.N}個`;
+  function createBeyoPrizePools(){
+    const members = [
+      "西田汐里",
+      "江口紗耶",
+      "高瀬くるみ",
+      "前田こころ",
+      "岡村美波",
+      "清野桃々姫",
+      "平井美葉",
+      "小林萌花",
+      "里吉うたの"
+    ];
+    const pools = { SR:[], R:[], N:[] };
+    pools.SR.push({ rarity:"SR", member:"BEYOOOOONDS", item:"メモリアルパネル", variant:"集合ビジュアル" });
+    members.forEach(member => {
+      pools.SR.push({ rarity:"SR", member, item:"BIGアクリルスタンド", variant:"通常A" });
+      pools.SR.push({ rarity:"SR", member, item:"BIGアクリルスタンド", variant:"通常B" });
+      pools.R.push({ rarity:"R", member, item:"ソロアクリルキーホルダー", variant:"通常" });
+      pools.N.push({ rarity:"N", member, item:"コレクションステッカー2枚セット", variant:"通常" });
+    });
+    pools.SR.push({ rarity:"SR", member:"高瀬くるみ", item:"BIGアクリルスタンド", variant:"SP / ホログラム仕様" });
+    pools.R.push({ rarity:"R", member:"高瀬くるみ", item:"ソロアクリルキーホルダー", variant:"SP / ホログラム仕様" });
+    pools.N.push({ rarity:"N", member:"高瀬くるみ", item:"コレクションステッカー2枚セット", variant:"SP / ホログラム仕様" });
+    return pools;
   }
 
-  function getRandomRarity(){
-    let r = Math.random() * 100;
-    let sum = 0;
-    for (let x of rarities){
-      sum += x.rate;
-      if (r <= sum) return x.type;
-    }
-    return rarities[rarities.length - 1].type;
+  function currentCampaign(){ return campaigns[activeCampaignKey]; }
+  function currentState(){ return campaigns[activeCampaignKey].state; }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>'"]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[tag]));
   }
 
-  function rarityClass(rarity) {
+  function rarityClass(rarity){
     if (rarity === "SR") return "rainbow-text";
     if (rarity === "R") return "gold-text";
     return "white-text";
   }
 
-  function buildDisplayText(member, rarity, item){
-    const safeMember = escapeHtml(member);
-    const safeRarity = escapeHtml(rarity);
-    const safeItem = escapeHtml(item);
-    const safeSize = itemSizes[item] ? escapeHtml(itemSizes[item]) : "";
-    return `
-      <div class="result-card ${rarityClass(rarity)}">
-        <span class="result-rarity">${safeRarity}</span>
-        <span class="result-member">${safeMember}</span>
-        <span class="result-item">${safeItem}</span>
-        ${safeSize ? `<span class="result-size">${safeSize}</span>` : ""}
-      </div>
-    `;
+  function updateTheme(){
+    const t = currentCampaign().theme;
+    const root = document.documentElement;
+    root.style.setProperty('--bg1', t.bg1);
+    root.style.setProperty('--bg2', t.bg2);
+    root.style.setProperty('--bg3', t.bg3);
+    root.style.setProperty('--accent1', t.accent1);
+    root.style.setProperty('--accent2', t.accent2);
+    root.style.setProperty('--buttonText', t.buttonText);
+    root.style.setProperty('--titleShadow', t.titleShadow);
   }
 
-  function drawGacha(){
-    const member = members[Math.floor(Math.random() * members.length)];
-    const rarity = getRandomRarity();
-    const itemArr = itemsConfig[rarity];
-    const item = itemArr[Math.floor(Math.random() * itemArr.length)];
+  function renderLineup(){
+    lineupContainer.innerHTML = currentCampaign().lineup.map(row => `
+      <div class="lineup-row">
+        <span class="badge badge-${row.badge.toLowerCase()}">${escapeHtml(row.badge)}</span>
+        <div>
+          <div class="lineup-name">${escapeHtml(row.name)}</div>
+          <div class="lineup-meta">${row.meta}</div>
+        </div>
+      </div>
+    `).join('');
+  }
 
-    //―――― 動画まわりは元アプリの構成を維持
-    videoEl.src = "scene_2.mp4";
-    videoEl.loop = false;
-    overlayEl.style.opacity = 0;
-    overlayEl.innerHTML = "";
-
-    videoEl.onended = () => {
-      videoEl.src = rarity === "SR" ? "scene_3_rarity_A.mp4" : rarity === "R" ? "scene_3_rarity_B.mp4" : "scene_3_rarity_C.mp4";
-      videoEl.loop = true;
-      videoEl.play();
-      setTimeout(() => {
-        overlayEl.innerHTML = buildDisplayText(member, rarity, item);
-        overlayEl.style.opacity = 1;
-        counts[rarity]++;
-        history.push({member, rarity, item});
-        updateCounter();
-        renderHistoryIfOpen();
-      }, 200);
-    };
-    videoEl.play();
+  function updateCounter(){
+    const counts = currentState().counts;
+    counterEl.innerText = `SR:${counts.SR}個 / R:${counts.R}個 / N:${counts.N}個`;
   }
 
   function renderHistoryIfOpen(){
-    if (histEl.style.display !== "block") return;
+    if (histEl.style.display !== 'block') return;
+    const history = currentState().history;
     if (!history.length) {
       histEl.innerHTML = `<div class="history-item">まだ獲得アイテムはありません。</div>`;
       return;
     }
     histEl.innerHTML = history.map((h, idx) => {
       const cls = rarityClass(h.rarity);
-      return `<div class="history-item ${cls}">${idx + 1}. ${escapeHtml(h.member)}: ${escapeHtml(h.rarity)}-${escapeHtml(h.item)}</div>`;
-    }).join("");
+      const variant = h.variant ? `（${escapeHtml(h.variant)}）` : '';
+      return `<div class="history-item ${cls}">${idx + 1}. ${escapeHtml(h.member)}: ${escapeHtml(h.rarity)}-${escapeHtml(h.item)}${variant}</div>`;
+    }).join('');
   }
 
-  videoEl.addEventListener("click", drawGacha);
-  document.getElementById("drawButton").addEventListener("click", drawGacha);
-
-  document.getElementById("showHistoryButton").addEventListener("click", () => {
-    histEl.style.display = histEl.style.display === "block" ? "none" : "block";
-    renderHistoryIfOpen();
-  });
-
-  document.getElementById("resetButton").addEventListener("click", () => {
-    counts = {SR:0, R:0, N:0};
-    history = [];
-    updateCounter();
-    histEl.style.display = "none";
-    histEl.innerHTML = "";
-    overlayEl.style.opacity = 0;
-    overlayEl.innerHTML = "";
-  });
-
-  updateCounter();
-
-  //―――― モーダル
-  const modal = document.getElementById("itemModal");
-  const btnEdit = document.getElementById("editItemsButton");
-  const btnSave = document.getElementById("saveEdit");
-  const btnCancel = document.getElementById("cancelEdit");
-
-  function populateModal(){
-    ["N", "R", "SR"].forEach(rty => {
-      const cont = document.getElementById(`list-${rty}`);
-      cont.innerHTML = "";
-      itemsConfig[rty].forEach(name => {
-        const inp = document.createElement("input");
-        inp.value = name;
-        cont.appendChild(inp);
+  function renderPrizeList(){
+    const target = document.getElementById('prizeList');
+    const rows = [];
+    ['SR','R','N'].forEach(rarity => {
+      currentCampaign().pools[rarity].forEach(p => {
+        const variant = p.variant ? `（${escapeHtml(p.variant)}）` : '';
+        rows.push(`<div><strong>${escapeHtml(p.rarity)}</strong> ${escapeHtml(p.member)} / ${escapeHtml(p.item)}${variant}</div>`);
       });
     });
+    target.innerHTML = rows.join('');
+    document.getElementById('prizeListTitle').innerText = currentCampaign().prizeListTitle;
   }
 
-  document.querySelectorAll("#itemModal .add").forEach(btn => btn.addEventListener("click", () => {
-    const r = btn.dataset.rarity;
-    const inp = document.createElement("input");
-    inp.placeholder = "アイテム名を入力";
-    document.getElementById(`list-${r}`).appendChild(inp);
-  }));
+  function buildDisplayText(prize){
+    const cls = rarityClass(prize.rarity);
+    const size = itemSizes[activeCampaignKey][prize.item] || '';
+    return `
+      <div class="result-card ${cls}">
+        <span class="result-rarity">${escapeHtml(prize.rarity)}</span>
+        <span class="result-member">${escapeHtml(prize.member)}</span>
+        <span class="result-item">${escapeHtml(prize.item)}</span>
+        ${prize.variant ? `<span class="result-variant">${escapeHtml(prize.variant)}</span>` : ''}
+        ${size ? `<span class="result-size">${escapeHtml(size)}</span>` : ''}
+      </div>
+    `;
+  }
 
-  btnEdit.addEventListener("click", () => {
-    populateModal();
-    modal.style.display = "flex";
+  function getRandomRarity(){
+    let r = Math.random() * 100;
+    let sum = 0;
+    for (const x of rarities) {
+      sum += x.rate;
+      if (r <= sum) return x.type;
+    }
+    return rarities[rarities.length - 1].type;
+  }
+
+  function getRandomPrize(){
+    const rarity = getRandomRarity();
+    const arr = currentCampaign().pools[rarity];
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function resetVideoToIdle(){
+    videoEl.onended = null;
+    videoEl.src = 'scene_1.mp4';
+    videoEl.loop = true;
+    videoEl.play();
+  }
+
+  function switchCampaign(key){
+    if (isRolling || !campaigns[key]) return;
+    activeCampaignKey = key;
+    document.getElementById('pageTitle').innerText = currentCampaign().title;
+    document.getElementById('pageSubtitle').innerText = currentCampaign().subtitle;
+    document.querySelectorAll('.campaign-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.campaign === key));
+    updateTheme();
+    renderLineup();
+    updateCounter();
+    overlayEl.style.opacity = 0;
+    overlayEl.innerHTML = '';
+    histEl.style.display = 'none';
+    histEl.innerHTML = '';
+    document.getElementById('listModal').style.display = 'none';
+    resetVideoToIdle();
+  }
+
+  function drawGacha(){
+    if (isRolling) return;
+    isRolling = true;
+    const prize = getRandomPrize();
+    videoEl.src = 'scene_2.mp4';
+    videoEl.loop = false;
+    overlayEl.style.opacity = 0;
+    overlayEl.innerHTML = '';
+    videoEl.onended = () => {
+      videoEl.src = prize.rarity === 'SR' ? 'scene_3_rarity_A.mp4' : prize.rarity === 'R' ? 'scene_3_rarity_B.mp4' : 'scene_3_rarity_C.mp4';
+      videoEl.loop = true;
+      videoEl.play();
+      setTimeout(() => {
+        overlayEl.innerHTML = buildDisplayText(prize);
+        overlayEl.style.opacity = 1;
+        currentState().counts[prize.rarity]++;
+        currentState().history.push(prize);
+        updateCounter();
+        renderHistoryIfOpen();
+        isRolling = false;
+      }, 200);
+    };
+    videoEl.play();
+  }
+
+  document.querySelectorAll('.campaign-btn').forEach(btn => btn.addEventListener('click', () => switchCampaign(btn.dataset.campaign)));
+  videoEl.addEventListener('click', drawGacha);
+  document.getElementById('drawButton').addEventListener('click', drawGacha);
+
+  document.getElementById('showHistoryButton').addEventListener('click', () => {
+    if (histEl.style.display === 'block') {
+      histEl.style.display = 'none';
+      histEl.innerHTML = '';
+    } else {
+      histEl.style.display = 'block';
+      renderHistoryIfOpen();
+    }
   });
 
-  btnCancel.addEventListener("click", () => {
-    modal.style.display = "none";
+  document.getElementById('showPrizeListButton').addEventListener('click', () => {
+    renderPrizeList();
+    document.getElementById('listModal').style.display = 'flex';
   });
 
-  btnSave.addEventListener("click", () => {
-    ["N", "R", "SR"].forEach(rty => {
-      const vals = Array.from(document.querySelectorAll(`#list-${rty} input`))
-        .map(i => i.value.trim())
-        .filter(v => v);
-      if (vals.length) itemsConfig[rty] = vals;
-    });
-    modal.style.display = "none";
-    alert("出現アイテム設定を更新しました！");
+  document.getElementById('closeListModal').addEventListener('click', () => {
+    document.getElementById('listModal').style.display = 'none';
   });
+
+  document.getElementById('resetButton').addEventListener('click', () => {
+    if (isRolling) return;
+    currentCampaign().state = { counts:{SR:0,R:0,N:0}, history:[] };
+    updateCounter();
+    histEl.style.display = 'none';
+    histEl.innerHTML = '';
+    overlayEl.style.opacity = 0;
+    overlayEl.innerHTML = '';
+    resetVideoToIdle();
+  });
+
+  switchCampaign('angerme');
 </script>
-
 </body>
 </html>
