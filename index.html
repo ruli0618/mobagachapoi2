@@ -203,17 +203,29 @@
     background:linear-gradient(to right,#fff3a2,#86ffc8,#75ceff,#ffd3ef);
     -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;
   }
-  #listModal{
+  #listModal,#drawResultModal{
     display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);
     align-items:center;justify-content:center;z-index:999;padding:18px;
   }
-  #listModal .modal-content{
+  #listModal .modal-content,#drawResultModal .modal-content{
     width:100%;max-width:780px;max-height:82vh;overflow:auto;background:#162027;color:#fff;
     border-radius:18px;border:1px solid rgba(255,255,255,.2);padding:20px;text-align:left;
   }
-  #listModal h2{margin-top:0;text-align:center}
+  #listModal h2,#drawResultModal h2{margin-top:0;text-align:center}
   .prize-list{columns:2;column-gap:26px;font-size:13px;line-height:1.7}
   .prize-list div{break-inside:avoid;border-bottom:1px solid rgba(255,255,255,.08);padding:2px 0}
+  .draw-summary{
+    text-align:center;
+    margin:0 auto 14px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.14);
+    font-weight:900;
+    line-height:1.7;
+  }
+  .draw-result-list{font-size:13px;line-height:1.7}
+  .draw-result-list div{border-bottom:1px solid rgba(255,255,255,.08);padding:3px 0}
   .modal-actions{text-align:right;margin-top:14px}
   .help-text{max-width:1040px;margin:0 auto 14px;color:var(--sub);font-size:13px}
   @media(max-width:980px){
@@ -235,7 +247,9 @@
 <div class="help-text">上のボタンでアンジュルム版とBEYOOOOONDS版を切り替えできます。各グループごとに獲得履歴とカウントを保持します。</div>
 
 <div class="top-actions">
-  <button id="drawButton" class="action primary">ガチャを回す</button>
+  <button id="drawButton" class="action primary">1連</button>
+  <button id="drawTenButton" class="action primary">10連</button>
+  <button id="drawHundredButton" class="action primary">100連</button>
   <button id="showHistoryButton" class="action">獲得アイテム一覧</button>
   <button id="showPrizeListButton" class="action">景品ラインナップ詳細</button>
   <button id="resetButton" class="action">このグループだけリセット</button>
@@ -260,6 +274,15 @@
     <h2 id="prizeListTitle">景品ラインナップ詳細</h2>
     <div id="prizeList" class="prize-list"></div>
     <div class="modal-actions"><button id="closeListModal" class="action">閉じる</button></div>
+  </div>
+</div>
+
+<div id="drawResultModal">
+  <div class="modal-content">
+    <h2 id="drawResultTitle">まとめ引き結果</h2>
+    <div id="drawResultSummary" class="draw-summary"></div>
+    <div id="drawResultList" class="draw-result-list"></div>
+    <div class="modal-actions"><button id="closeDrawResultModal" class="action">閉じる</button></div>
   </div>
 </div>
 
@@ -512,6 +535,44 @@
     document.getElementById('prizeListTitle').innerText = currentCampaign().prizeListTitle;
   }
 
+  function summarizeResults(results){
+    return results.reduce((acc, prize) => {
+      acc[prize.rarity] = (acc[prize.rarity] || 0) + 1;
+      return acc;
+    }, { SR:0, R:0, N:0 });
+  }
+
+  function getBestRarity(results){
+    if (results.some(p => p.rarity === 'SR')) return 'SR';
+    if (results.some(p => p.rarity === 'R')) return 'R';
+    return 'N';
+  }
+
+  function renderDrawResultModal(results){
+    const summary = summarizeResults(results);
+    document.getElementById('drawResultTitle').innerText = `${results.length}連 結果`;
+    document.getElementById('drawResultSummary').innerHTML = `合計 ${results.length}個<br>SR:${summary.SR}個 / R:${summary.R}個 / N:${summary.N}個`;
+    document.getElementById('drawResultList').innerHTML = results.map((p, idx) => {
+      const variant = p.variant ? `（${escapeHtml(p.variant)}）` : '';
+      const cls = rarityClass(p.rarity);
+      return `<div class="${cls}">${idx + 1}. ${escapeHtml(p.member)} / ${escapeHtml(p.item)}${variant}</div>`;
+    }).join('');
+    document.getElementById('drawResultModal').style.display = 'flex';
+  }
+
+  function buildMultiDisplayText(results){
+    const summary = summarizeResults(results);
+    const best = getBestRarity(results);
+    const cls = rarityClass(best);
+    return `
+      <div class="result-card ${cls}">
+        <span class="result-member">${results.length}連 結果</span>
+        <span class="result-item">SR:${summary.SR}個 / R:${summary.R}個 / N:${summary.N}個</span>
+        <span class="result-size">詳細は結果リストに表示</span>
+      </div>
+    `;
+  }
+
   function buildDisplayText(prize){
     const size = itemSizes[activeCampaignKey][prize.item] || '';
     return `
@@ -562,29 +623,38 @@
     histEl.style.display = 'none';
     histEl.innerHTML = '';
     document.getElementById('listModal').style.display = 'none';
+    document.getElementById('drawResultModal').style.display = 'none';
     resetVideoToIdle();
   }
 
-  function drawGacha(){
+  function drawGacha(count = 1){
     if (isRolling) return;
+    count = Number(count) || 1;
+    count = Math.max(1, Math.min(100, Math.floor(count)));
     isRolling = true;
-    const prize = getRandomPrize();
+    document.getElementById('drawResultModal').style.display = 'none';
+    const results = Array.from({ length: count }, () => getRandomPrize());
+    const bestRarity = getBestRarity(results);
+
     videoEl.src = 'scene_2.mp4';
     videoEl.loop = false;
     overlayEl.style.opacity = 0;
     overlayEl.innerHTML = '';
     videoEl.onended = () => {
-      videoEl.src = prize.rarity === 'SR' ? 'scene_3_rarity_A.mp4' : prize.rarity === 'R' ? 'scene_3_rarity_B.mp4' : 'scene_3_rarity_C.mp4';
+      videoEl.src = bestRarity === 'SR' ? 'scene_3_rarity_A.mp4' : bestRarity === 'R' ? 'scene_3_rarity_B.mp4' : 'scene_3_rarity_C.mp4';
       videoEl.loop = true;
       videoEl.play();
       setTimeout(() => {
-        overlayEl.innerHTML = buildDisplayText(prize);
+        overlayEl.innerHTML = count === 1 ? buildDisplayText(results[0]) : buildMultiDisplayText(results);
         overlayEl.style.opacity = 1;
-        currentState().counts[prize.rarity]++;
-        currentState().history.push(prize);
+        results.forEach(prize => {
+          currentState().counts[prize.rarity]++;
+          currentState().history.push(prize);
+        });
         savePersistedData();
         updateCounter();
         renderHistoryIfOpen();
+        if (count > 1) renderDrawResultModal(results);
         isRolling = false;
       }, 200);
     };
@@ -592,8 +662,10 @@
   }
 
   document.querySelectorAll('.campaign-btn').forEach(btn => btn.addEventListener('click', () => switchCampaign(btn.dataset.campaign)));
-  videoEl.addEventListener('click', drawGacha);
-  document.getElementById('drawButton').addEventListener('click', drawGacha);
+  videoEl.addEventListener('click', () => drawGacha(1));
+  document.getElementById('drawButton').addEventListener('click', () => drawGacha(1));
+  document.getElementById('drawTenButton').addEventListener('click', () => drawGacha(10));
+  document.getElementById('drawHundredButton').addEventListener('click', () => drawGacha(100));
 
   document.getElementById('showHistoryButton').addEventListener('click', () => {
     if (histEl.style.display === 'block') {
@@ -614,6 +686,10 @@
     document.getElementById('listModal').style.display = 'none';
   });
 
+  document.getElementById('closeDrawResultModal').addEventListener('click', () => {
+    document.getElementById('drawResultModal').style.display = 'none';
+  });
+
   document.getElementById('resetButton').addEventListener('click', () => {
     if (isRolling) return;
     currentCampaign().state = { counts:{SR:0,R:0,N:0}, history:[] };
@@ -623,6 +699,7 @@
     histEl.innerHTML = '';
     overlayEl.style.opacity = 0;
     overlayEl.innerHTML = '';
+    document.getElementById('drawResultModal').style.display = 'none';
     resetVideoToIdle();
   });
 
