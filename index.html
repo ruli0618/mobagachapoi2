@@ -144,11 +144,23 @@
     margin-bottom:8px;
     padding:4px 15px;
     border-radius:999px;
-    background:var(--resultPillBg);
-    color:var(--resultPillText);
     font-size:clamp(18px,3vw,30px);
     letter-spacing:.08em;
     font-weight:900;
+    border:1px solid rgba(255,255,255,.42);
+    box-shadow:0 4px 14px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .result-rarity.rarity-n{
+    background:linear-gradient(180deg,#f7f8fb 0%, #d8dee5 100%);
+    color:#3a4754;
+  }
+  .result-rarity.rarity-r{
+    background:linear-gradient(180deg,#fff3ca 0%, #e1bc66 100%);
+    color:#6f4c08;
+  }
+  .result-rarity.rarity-sr{
+    background:linear-gradient(135deg,#fff9df 0%, #f4d57d 38%, #fff0b2 68%, #fffced 100%);
+    color:#7a5510;
   }
   .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05;color:var(--resultMember)}
   .result-item{display:block;margin-top:8px;font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--resultItem)}
@@ -450,7 +462,7 @@
     const size = itemSizes[activeCampaignKey][prize.item] || '';
     return `
       <div class="result-card">
-        <span class="result-rarity">${escapeHtml(prize.rarity)}</span>
+        <span class="result-rarity rarity-${prize.rarity.toLowerCase()}">${escapeHtml(prize.rarity)}</span>
         <span class="result-member">${escapeHtml(prize.member)}</span>
         <span class="result-item">${escapeHtml(prize.item)}</span>
         ${prize.variant ? `<span class="result-variant">${escapeHtml(prize.variant)}</span>` : ''}
