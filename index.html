@@ -328,6 +328,7 @@
 
   let activeCampaignKey = "angerme";
   let isRolling = false;
+  const STORAGE_KEY = "hello_gacha_switcher_state_v1";
 
   const videoEl = document.getElementById("gachaVideo");
   const overlayEl = document.getElementById("overlay");
@@ -381,6 +382,59 @@
     pools.R.push({ rarity:"R", member:"高瀬くるみ", item:"ソロアクリルキーホルダー", variant:"SP / ホログラム仕様" });
     pools.N.push({ rarity:"N", member:"高瀬くるみ", item:"コレクションステッカー2枚セット", variant:"SP / ホログラム仕様" });
     return pools;
+  }
+
+  function sanitizeHistoryItem(item){
+    if (!item || typeof item !== "object") return null;
+    return {
+      rarity: typeof item.rarity === "string" ? item.rarity : "",
+      member: typeof item.member === "string" ? item.member : "",
+      item: typeof item.item === "string" ? item.item : "",
+      variant: typeof item.variant === "string" ? item.variant : ""
+    };
+  }
+
+  function loadPersistedData(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.activeCampaignKey && campaigns[parsed.activeCampaignKey]) {
+        activeCampaignKey = parsed.activeCampaignKey;
+      }
+      if (!parsed || !parsed.campaignStates || typeof parsed.campaignStates !== "object") return;
+      Object.keys(campaigns).forEach(key => {
+        const saved = parsed.campaignStates[key];
+        if (!saved || typeof saved !== "object") return;
+        const counts = saved.counts && typeof saved.counts === "object" ? saved.counts : {};
+        const history = Array.isArray(saved.history) ? saved.history.map(sanitizeHistoryItem).filter(Boolean) : [];
+        campaigns[key].state = {
+          counts: {
+            SR: Number.isFinite(counts.SR) ? counts.SR : 0,
+            R: Number.isFinite(counts.R) ? counts.R : 0,
+            N: Number.isFinite(counts.N) ? counts.N : 0
+          },
+          history
+        };
+      });
+    } catch (error) {
+      console.warn("保存データの読み込みに失敗しました", error);
+    }
+  }
+
+  function savePersistedData(){
+    try {
+      const payload = {
+        activeCampaignKey,
+        campaignStates: {}
+      };
+      Object.keys(campaigns).forEach(key => {
+        payload.campaignStates[key] = campaigns[key].state;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (error) {
+      console.warn("保存データの書き込みに失敗しました", error);
+    }
   }
 
   function currentCampaign(){ return campaigns[activeCampaignKey]; }
@@ -496,6 +550,7 @@
   function switchCampaign(key){
     if (isRolling || !campaigns[key]) return;
     activeCampaignKey = key;
+    savePersistedData();
     document.getElementById('pageTitle').innerText = currentCampaign().title;
     document.getElementById('pageSubtitle').innerText = currentCampaign().subtitle;
     document.querySelectorAll('.campaign-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.campaign === key));
@@ -527,6 +582,7 @@
         overlayEl.style.opacity = 1;
         currentState().counts[prize.rarity]++;
         currentState().history.push(prize);
+        savePersistedData();
         updateCounter();
         renderHistoryIfOpen();
         isRolling = false;
@@ -561,6 +617,7 @@
   document.getElementById('resetButton').addEventListener('click', () => {
     if (isRolling) return;
     currentCampaign().state = { counts:{SR:0,R:0,N:0}, history:[] };
+    savePersistedData();
     updateCounter();
     histEl.style.display = 'none';
     histEl.innerHTML = '';
@@ -569,7 +626,8 @@
     resetVideoToIdle();
   });
 
-  switchCampaign('angerme');
+  loadPersistedData();
+  switchCampaign(activeCampaignKey);
 </script>
 </body>
 </html>
