@@ -17,6 +17,12 @@
     --sub:rgba(255,255,255,.80);
     --buttonText:#102030;
     --titleShadow:#0b2437;
+    --resultMember:#fff6d8;
+    --resultItem:#ffe38f;
+    --resultVariant:#fff4d4;
+    --resultSize:#fff9ea;
+    --resultPillBg:rgba(255,255,255,.20);
+    --resultPillText:#25465e;
   }
   *{box-sizing:border-box}
   body{
@@ -138,13 +144,16 @@
     margin-bottom:8px;
     padding:4px 15px;
     border-radius:999px;
-    background:rgba(255,255,255,.16);
+    background:var(--resultPillBg);
+    color:var(--resultPillText);
     font-size:clamp(18px,3vw,30px);
     letter-spacing:.08em;
+    font-weight:900;
   }
-  .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05}
-  .result-item{display:block;margin-top:8px;font-size:clamp(20px,3vw,32px);font-weight:900}
-  .result-variant,.result-size{display:block;margin-top:5px;color:rgba(255,255,255,.78);font-size:clamp(13px,1.8vw,17px);font-weight:800}
+  .result-member{display:block;font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1.05;color:var(--resultMember)}
+  .result-item{display:block;margin-top:8px;font-size:clamp(20px,3vw,32px);font-weight:900;color:var(--resultItem)}
+  .result-variant{display:block;margin-top:5px;color:var(--resultVariant);font-size:clamp(13px,1.8vw,17px);font-weight:800}
+  .result-size{display:block;margin-top:5px;color:var(--resultSize);font-size:clamp(13px,1.8vw,17px);font-weight:800}
   .counter-overlay{
     position:absolute;
     bottom:12px;left:50%;transform:translateX(-50%);
@@ -271,7 +280,9 @@
       prizeListTitle: "ANGERME 景品ラインナップ詳細",
       theme: {
         bg1: "#07131c", bg2: "#163043", bg3: "#08111a",
-        accent1: "#57c6ff", accent2: "#f2c96a", buttonText: "#0e2231", titleShadow: "#294d68"
+        accent1: "#57c6ff", accent2: "#f2c96a", buttonText: "#0e2231", titleShadow: "#294d68",
+        resultMember: "#f8fbff", resultItem: "#ffe7a5", resultVariant: "#ffffff", resultSize: "#eef7ff",
+        resultPillBg: "rgba(255,255,255,.82)", resultPillText: "#2f6f93"
       },
       lineup: [
         { badge:"SR", name:"フェイスタオル", meta:"全9種 / サイズ: 本体 約W340mm × H840mm" },
@@ -288,7 +299,9 @@
       prizeListTitle: "BEYOOOOONDS 景品ラインナップ詳細",
       theme: {
         bg1: "#07140f", bg2: "#14251d", bg3: "#09130f",
-        accent1: "#79d8ad", accent2: "#d6b64e", buttonText: "#132018", titleShadow: "#5d7a48"
+        accent1: "#79d8ad", accent2: "#d6b64e", buttonText: "#132018", titleShadow: "#5d7a48",
+        resultMember: "#fff2c5", resultItem: "#ffe18b", resultVariant: "#fff7df", resultSize: "#fffaf0",
+        resultPillBg: "rgba(255,240,194,.88)", resultPillText: "#7a5612"
       },
       lineup: [
         { badge:"SR", name:"メモリアルパネル", meta:"全1種 / サイズ: 約W180mm × H150mm" },
@@ -381,6 +394,12 @@
     root.style.setProperty('--accent2', t.accent2);
     root.style.setProperty('--buttonText', t.buttonText);
     root.style.setProperty('--titleShadow', t.titleShadow);
+    root.style.setProperty('--resultMember', t.resultMember);
+    root.style.setProperty('--resultItem', t.resultItem);
+    root.style.setProperty('--resultVariant', t.resultVariant);
+    root.style.setProperty('--resultSize', t.resultSize);
+    root.style.setProperty('--resultPillBg', t.resultPillBg);
+    root.style.setProperty('--resultPillText', t.resultPillText);
   }
 
   function renderLineup(){
@@ -428,10 +447,9 @@
   }
 
   function buildDisplayText(prize){
-    const cls = rarityClass(prize.rarity);
     const size = itemSizes[activeCampaignKey][prize.item] || '';
     return `
-      <div class="result-card ${cls}">
+      <div class="result-card">
         <span class="result-rarity">${escapeHtml(prize.rarity)}</span>
         <span class="result-member">${escapeHtml(prize.member)}</span>
         <span class="result-item">${escapeHtml(prize.item)}</span>
